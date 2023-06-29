@@ -1,6 +1,5 @@
 import Joi from "joi";
 import { ITutor } from "../models/interfaces/ITutor";
-import { petSchema } from "./petValidator";
 
 export const tutorSchema = Joi.object<ITutor>({
     name: Joi.string().required(),
@@ -13,7 +12,6 @@ export const tutorSchema = Joi.object<ITutor>({
     zip_code: Joi.string()
         .pattern(/^\d{8}$/)
         .required(),
-    pets: Joi.array().items(petSchema),
 });
 export function validateTutorSchema(tutor: ITutor) {
     return tutorSchema.validateAsync(tutor);

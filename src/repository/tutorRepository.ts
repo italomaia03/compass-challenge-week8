@@ -5,6 +5,10 @@ class TutorRepository {
         return await Tutor.find();
     }
 
+    async getOne(tutorId: string) {
+        return Tutor.findOne({ _id: tutorId });
+    }
+
     async create(data: ITutor) {
         return await Tutor.create(data);
     }

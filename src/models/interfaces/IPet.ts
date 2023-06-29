@@ -1,8 +1,10 @@
+import { Schema } from "mongoose";
+
 export interface IPet {
-    id: number;
+    _id?: Schema.Types.UUID;
     name: string;
     species: string;
     carry: string;
     weight: number;
-    date_of_birth: string;
+    date_of_birth: Date;
 }

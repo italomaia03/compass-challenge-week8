@@ -10,6 +10,10 @@ class TutorService {
         return await TutorRepository.get();
     }
 
+    async getOne(tutorId: string) {
+        return await TutorRepository.getOne(tutorId);
+    }
+
     async create(data: ITutor) {
         data.date_of_birth = new Date(data.date_of_birth);
 
