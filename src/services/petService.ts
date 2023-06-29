@@ -1,6 +1,6 @@
 import { StatusCodes } from "http-status-codes";
 import { CustomError } from "../errors/CustomError";
-import { IPet } from "../models";
+import { IPet, ITutor } from "../models";
 import PetRepository from "../repository/petRepository";
 import { validatePetSchema } from "../utils/petValidator";
 import tutorService from "./tutorService";
@@ -22,7 +22,19 @@ class PetService {
         const savedPet = await PetRepository.create(data);
 
         desiredTutor.pets.addToSet(savedPet._id);
-        validateTutorSchema(desiredTutor);
+
+        const { name, email, password, phone, date_of_birth, zip_code } =
+            desiredTutor.toObject();
+
+        validateTutorSchema({
+            name,
+            email,
+            password,
+            phone,
+            date_of_birth,
+            zip_code,
+        } as ITutor);
+
         desiredTutor.save();
 
         return { msg: "Pet has been successfully created" };

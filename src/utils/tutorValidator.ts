@@ -1,5 +1,6 @@
 import Joi from "joi";
 import { ITutor } from "../models/interfaces/ITutor";
+import { petSchema } from "./petValidator";
 
 export const tutorSchema = Joi.object<ITutor>({
     name: Joi.string().required(),

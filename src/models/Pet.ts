@@ -14,12 +14,6 @@ const petSchema = new Schema<IPet>(
     { versionKey: false, timestamps: false, toJSON: { getters: true } }
 );
 
-petSchema.methods.toJSON = function () {
-    let object = this.toObject();
-    delete object.password;
-    return object;
-};
-
 const Pet = model<IPet>("Pets", petSchema);
 
 export default Pet;
