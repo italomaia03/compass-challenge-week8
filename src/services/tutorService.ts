@@ -16,6 +16,16 @@ class TutorService {
 
         return { msg: "Tutor has been successfully created" };
     }
+
+    async update(tutorId: string, data: ITutor) {
+        data.date_of_birth = new Date(data.date_of_birth);
+
+        await validateTutorSchema(data);
+
+        await TutorRepository.update(tutorId, data);
+
+        return { msg: "Tutor has been successfully updated" };
+    }
 }
 
 const tutorService = new TutorService();

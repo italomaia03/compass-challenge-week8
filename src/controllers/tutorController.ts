@@ -17,4 +17,13 @@ export class TutorController {
 
         res.status(StatusCodes.CREATED).json(response);
     }
+
+    async update(req: Request, res: Response) {
+        const tutorId = req.params.id;
+        const data = req.body as ITutor;
+
+        const response = await tutorService.update(tutorId, data);
+
+        res.status(StatusCodes.OK).json(response);
+    }
 }
