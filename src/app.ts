@@ -8,6 +8,7 @@ import yaml from "yaml";
 import swaggerUi from "swagger-ui-express";
 import path from "path";
 import dotenv from "dotenv";
+import { connectDB } from "./repository/connection";
 
 const app = express();
 dotenv.config({});
@@ -24,5 +25,14 @@ app.use(resourceNotFound);
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 3000;
+const startServer = async () => {
+    try {
+        const url = process.env.MONGO_URI!;
+        await connectDB(url);
+        app.listen(PORT, () => console.log(`Server is up on port ${PORT}`));
+    } catch (error) {
+        console.log(error);
+    }
+};
 
-app.listen(PORT, () => console.log(`Server is up on port ${PORT}`));
+startServer();

@@ -1,7 +1,10 @@
 import { Router } from "express";
+import { TutorController } from "../controllers/tutorController";
 
 export const tutorRouter: Router = Router();
 
-tutorRouter.route("/tutors").get(getAllTutors);
-tutorRouter.route("/tutor").post(createTutor);
-tutorRouter.route("/tutor/:id").put(updateTutor).delete(deleteTutor);
+const controller = new TutorController();
+
+tutorRouter.route("/tutors").get(controller.get);
+
+// tutorRouter.route("/tutor/:id").put(updateTutor).delete(deleteTutor);
