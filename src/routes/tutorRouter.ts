@@ -7,6 +7,7 @@ const controller = new TutorController();
 
 tutorRouter.route("/tutors").get(controller.get);
 tutorRouter.route("/tutor").post(controller.create);
-tutorRouter.route("/tutor/:id").put(controller.update);
-
-// tutorRouter.route("/tutor/:id").put(updateTutor).delete(deleteTutor);
+tutorRouter
+    .route("/tutor/:id")
+    .put(controller.update)
+    .delete(controller.delete);

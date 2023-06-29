@@ -26,4 +26,11 @@ export class TutorController {
 
         res.status(StatusCodes.OK).json(response);
     }
+    async delete(req: Request, res: Response) {
+        const tutorId = req.params.id;
+
+        const response = await tutorService.delete(tutorId);
+
+        res.status(StatusCodes.OK).json(response);
+    }
 }
