@@ -1,6 +1,6 @@
 import express from "express";
 import "express-async-errors";
-import { petRouter, tutorRouter } from "./routes";
+import { authRouter, petRouter, tutorRouter } from "./routes";
 import { resourceNotFound } from "./middlewares/notFound";
 import { errorHandler } from "./middlewares/errorHandler";
 import fs from "fs";
@@ -18,6 +18,7 @@ const swaggerDocs = yaml.parse(file);
 
 // middlewares
 app.use(express.json());
+app.use("/api/v1", authRouter);
 app.use("/api/v1", tutorRouter);
 app.use("/api/v1", petRouter);
 app.use("/api/v1/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));

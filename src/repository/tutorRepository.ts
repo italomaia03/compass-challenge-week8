@@ -4,16 +4,10 @@ import { ITutor, Tutor } from "../models";
 class TutorRepository {
     async get() {
         return await Tutor.find().populate("pets");
-        // Tutor.aggregate().lookup({
-        //     from: "pets",
-        //     localField: "pets",
-        //     foreignField: "_id",
-        //     as: "Pets",
-        // });
     }
 
-    async getOne(tutorId: string) {
-        return Tutor.findOne({ _id: tutorId });
+    async getOne(args: object) {
+        return Tutor.findOne(args);
     }
 
     async create(data: ITutor) {

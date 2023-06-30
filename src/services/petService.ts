@@ -5,11 +5,10 @@ import PetRepository from "../repository/petRepository";
 import { validatePetSchema } from "../utils/petValidator";
 import tutorService from "./tutorService";
 import { validateTutorSchema } from "../utils/tutorValidator";
-import { HydratedDocument, Schema } from "mongoose";
 
 class PetService {
     async create(tutorId: string, data: IPet) {
-        const desiredTutor = await tutorService.getOne(tutorId);
+        const desiredTutor = await tutorService.getOne({ _id: tutorId });
 
         if (!desiredTutor) {
             throw new CustomError(
@@ -43,7 +42,7 @@ class PetService {
 
     async update(tutorId: string, petId: string, data: IPet) {
         const petToBeUpdated = await PetRepository.getOne(petId);
-        const desiredTutor = await tutorService.getOne(tutorId);
+        const desiredTutor = await tutorService.getOne({ _id: tutorId });
 
         if (!desiredTutor) {
             throw new CustomError(
@@ -73,7 +72,7 @@ class PetService {
 
     async delete(tutorId: string, petId: string) {
         const petToBeDeleted = await PetRepository.getOne(petId);
-        const desiredTutor = await tutorService.getOne(tutorId);
+        const desiredTutor = await tutorService.getOne({ _id: tutorId });
 
         if (!desiredTutor) {
             throw new CustomError(

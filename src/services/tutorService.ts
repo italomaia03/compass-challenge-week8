@@ -4,18 +4,25 @@ import { ITutor, Tutor } from "../models";
 import TutorRepository from "../repository/tutorRepository";
 import { validateTutorSchema } from "../utils/tutorValidator";
 import { HydratedDocument } from "mongoose";
+import bcrypt from "bcrypt";
 
 class TutorService {
     async get() {
         return await TutorRepository.get();
     }
 
-    async getOne(tutorId: string) {
-        return await TutorRepository.getOne(tutorId);
+    async getOne(args: object) {
+        return await TutorRepository.getOne(args);
     }
 
     async create(data: ITutor) {
         data.date_of_birth = new Date(data.date_of_birth);
+
+        const salt = await bcrypt.genSalt(10);
+        const hashPassword = await bcrypt.hash(data.password, salt);
+
+        data.password = hashPassword;
+        console.log(data.password);
 
         await validateTutorSchema(data);
 
@@ -27,7 +34,7 @@ class TutorService {
     async update(tutorId: string, data: ITutor) {
         data.date_of_birth = new Date(data.date_of_birth);
 
-        const tutorToBeUpdated = await this.getOne(tutorId!);
+        const tutorToBeUpdated = await this.getOne({ _id: tutorId });
 
         if (!tutorToBeUpdated) {
             throw new CustomError(

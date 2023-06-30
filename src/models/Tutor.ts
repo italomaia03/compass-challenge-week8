@@ -1,6 +1,7 @@
 import { Schema, model } from "mongoose";
 import { ITutor } from ".";
 import { randomUUID } from "crypto";
+import bcrypt from "bcrypt";
 
 const tutorSchema = new Schema<ITutor>(
     {
