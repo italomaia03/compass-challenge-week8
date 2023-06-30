@@ -39,6 +39,36 @@ class PetService {
 
         return { msg: "Pet has been successfully created" };
     }
+
+    async update(tutorId: string, petId: string, data: IPet) {
+        const petToBeUpdated = await PetRepository.getOne(petId);
+        const desiredTutor = await tutorService.getOne(tutorId);
+
+        if (!desiredTutor) {
+            throw new CustomError(
+                `There is no tutor with ID ${tutorId}`,
+                StatusCodes.NOT_FOUND
+            );
+        }
+
+        if (!petToBeUpdated) {
+            throw new CustomError(
+                `There is no pet with ID ${petId}`,
+                StatusCodes.NOT_FOUND
+            );
+        }
+
+        data.date_of_birth = new Date(data.date_of_birth);
+        await validatePetSchema(data);
+
+        const { name, species, carry, weight, date_of_birth } = data;
+
+        petToBeUpdated.$set({ name, species, carry, weight, date_of_birth });
+
+        await PetRepository.update(petToBeUpdated);
+
+        return { msg: "Pet has been successfully updated" };
+    }
 }
 
 const petService = new PetService();

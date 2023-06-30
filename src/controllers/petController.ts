@@ -20,4 +20,21 @@ export class PetController {
 
         res.status(StatusCodes.CREATED).json(response);
     }
+
+    async update(req: Request, res: Response) {
+        const { name, species, carry, weight, date_of_birth } = req.body;
+        const { tutorId, petId } = req.params;
+
+        const data = {
+            name,
+            species,
+            carry,
+            weight,
+            date_of_birth,
+        } as IPet;
+
+        const response = await petService.update(tutorId, petId, data);
+
+        res.status(StatusCodes.CREATED).json(response);
+    }
 }
