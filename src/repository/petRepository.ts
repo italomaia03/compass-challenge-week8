@@ -15,6 +15,10 @@ class PetRepository {
     async update(pet: HydratedDocument<IPet>) {
         return pet.save();
     }
+
+    async delete(pet: HydratedDocument<IPet>) {
+        return pet.deleteOne();
+    }
 }
 
 export default new PetRepository();

@@ -5,6 +5,7 @@ import PetRepository from "../repository/petRepository";
 import { validatePetSchema } from "../utils/petValidator";
 import tutorService from "./tutorService";
 import { validateTutorSchema } from "../utils/tutorValidator";
+import { HydratedDocument, Schema } from "mongoose";
 
 class PetService {
     async create(tutorId: string, data: IPet) {
@@ -68,6 +69,44 @@ class PetService {
         await PetRepository.update(petToBeUpdated);
 
         return { msg: "Pet has been successfully updated" };
+    }
+
+    async delete(tutorId: string, petId: string) {
+        const petToBeDeleted = await PetRepository.getOne(petId);
+        const desiredTutor = await tutorService.getOne(tutorId);
+
+        if (!desiredTutor) {
+            throw new CustomError(
+                `There is no tutor with ID ${tutorId}`,
+                StatusCodes.NOT_FOUND
+            );
+        }
+
+        if (!petToBeDeleted) {
+            throw new CustomError(
+                `There is no pet with ID ${petId}`,
+                StatusCodes.NOT_FOUND
+            );
+        }
+
+        const assignedPet = desiredTutor.pets.find((pet) => {
+            return pet === petId;
+        });
+
+        if (!assignedPet) {
+            throw new CustomError(
+                `No assigned pet with ID ${petId} to tutor ${tutorId}`,
+                404
+            );
+        }
+
+        const petIndex = desiredTutor.pets.indexOf(assignedPet);
+
+        await PetRepository.delete(petToBeDeleted);
+
+        await tutorService.deletePet(desiredTutor, petIndex);
+
+        return { msg: "No Content" };
     }
 }
 

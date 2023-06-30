@@ -24,7 +24,7 @@ const tutorSchema = new Schema<ITutor>(
             get: formatDate,
         },
         zip_code: { type: String, required: true },
-        pets: [Schema.Types.UUID],
+        pets: [{ type: Schema.Types.UUID, ref: "Pets" }],
     },
     {
         versionKey: false,

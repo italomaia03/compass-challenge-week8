@@ -37,4 +37,12 @@ export class PetController {
 
         res.status(StatusCodes.CREATED).json(response);
     }
+
+    async delete(req: Request, res: Response) {
+        const { tutorId, petId } = req.params;
+
+        const response = await petService.delete(tutorId, petId);
+
+        res.status(StatusCodes.NO_CONTENT).json(response);
+    }
 }

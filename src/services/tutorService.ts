@@ -3,6 +3,7 @@ import { CustomError } from "../errors/CustomError";
 import { ITutor, Tutor } from "../models";
 import TutorRepository from "../repository/tutorRepository";
 import { validateTutorSchema } from "../utils/tutorValidator";
+import { HydratedDocument } from "mongoose";
 
 class TutorService {
     async get() {
@@ -25,9 +26,10 @@ class TutorService {
 
     async update(tutorId: string, data: ITutor) {
         data.date_of_birth = new Date(data.date_of_birth);
-        const tutor = await Tutor.findOne({ _id: tutorId });
 
-        if (!tutor) {
+        const tutorToBeUpdated = await this.getOne(tutorId!);
+
+        if (!tutorToBeUpdated) {
             throw new CustomError(
                 `There is no tutor with ID ${tutorId}`,
                 StatusCodes.NOT_FOUND
@@ -35,7 +37,7 @@ class TutorService {
         }
         await validateTutorSchema(data);
 
-        await TutorRepository.update(tutorId, data);
+        await TutorRepository.update(tutorToBeUpdated, data);
 
         return { msg: "Tutor has been successfully updated" };
     }
@@ -60,6 +62,10 @@ class TutorService {
         await TutorRepository.delete(tutorId);
 
         return { msg: "Tutor has been successfully delete" };
+    }
+
+    async deletePet(tutor: HydratedDocument<ITutor>, petIndex: number) {
+        return TutorRepository.deletePet(tutor, petIndex);
     }
 }
 

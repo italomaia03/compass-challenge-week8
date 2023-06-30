@@ -11,7 +11,12 @@ const petSchema = new Schema<IPet>(
         weight: { type: Number, required: true },
         date_of_birth: { type: Date, required: true },
     },
-    { versionKey: false, timestamps: false, toJSON: { getters: true } }
+    {
+        versionKey: false,
+        timestamps: false,
+        toJSON: { getters: true },
+        id: false,
+    }
 );
 
 const Pet = model<IPet>("Pets", petSchema);
