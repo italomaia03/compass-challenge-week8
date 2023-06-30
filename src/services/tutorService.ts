@@ -3,7 +3,6 @@ import { CustomError } from "../errors/CustomError";
 import { ITutor, Tutor } from "../models";
 import TutorRepository from "../repository/tutorRepository";
 import { validateTutorSchema } from "../utils/tutorValidator";
-import tutorRepository from "../repository/tutorRepository";
 
 class TutorService {
     async get() {

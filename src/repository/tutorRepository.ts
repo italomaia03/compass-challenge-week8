@@ -2,7 +2,12 @@ import { ITutor, Tutor } from "../models";
 
 class TutorRepository {
     async get() {
-        return await Tutor.find();
+        return await Tutor.aggregate().lookup({
+            from: "pets",
+            localField: "pets",
+            foreignField: "_id",
+            as: "pets",
+        });
     }
 
     async getOne(tutorId: string) {
