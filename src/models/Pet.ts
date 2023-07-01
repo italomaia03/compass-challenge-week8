@@ -1,8 +1,8 @@
-import { Schema, model } from "mongoose";
+import { Model, Schema, model } from "mongoose";
 import { IPet } from ".";
 import { randomUUID } from "crypto";
 
-const petSchema = new Schema<IPet>(
+const petSchema = new Schema<IPet, Model<IPet>>(
     {
         _id: { type: Schema.Types.UUID, default: () => randomUUID() },
         name: { type: String, required: true },
@@ -19,6 +19,6 @@ const petSchema = new Schema<IPet>(
     }
 );
 
-const Pet = model<IPet>("Pets", petSchema);
+const Pet = model<IPet, Model<IPet>>("Pets", petSchema);
 
 export default Pet;

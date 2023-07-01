@@ -9,7 +9,7 @@ class PetRepository {
     async create(data: IPet) {
         const petToBeSaved = await new Pet(data).save();
 
-        return petToBeSaved.toObject();
+        return petToBeSaved;
     }
 
     async update(pet: HydratedDocument<IPet>) {

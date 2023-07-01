@@ -88,9 +88,7 @@ class PetService {
             );
         }
 
-        const assignedPet = desiredTutor.pets.find((pet) => {
-            return pet === petId;
-        });
+        const assignedPet = desiredTutor.findPet(petToBeDeleted);
 
         if (!assignedPet) {
             throw new CustomError(
