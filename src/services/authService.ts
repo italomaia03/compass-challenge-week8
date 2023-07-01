@@ -2,7 +2,6 @@ import { StatusCodes } from "http-status-codes";
 import { CustomError } from "../errors/CustomError";
 import tutorService from "./tutorService";
 import jwtUtils from "../utils/jwt";
-import bcrypt from "bcrypt";
 
 class AuthService {
     async login(email: string, password: string) {
@@ -22,10 +21,7 @@ class AuthService {
             );
         }
 
-        const validatePassword = await bcrypt.compare(
-            password,
-            desiredTutor.toObject().password
-        );
+        const validatePassword = await desiredTutor.comparePassword(password);
 
         if (!validatePassword) {
             throw new CustomError(
