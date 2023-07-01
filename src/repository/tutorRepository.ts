@@ -15,16 +15,10 @@ class TutorRepository {
     }
 
     async update(tutorToBeUpdated: HydratedDocument<ITutor>, data: ITutor) {
-        const { name, password, email, phone, zip_code, date_of_birth } = data;
+        // const { name, password, email, phone, zip_code, date_of_birth } = data;
+        const tutor: ITutor = data;
 
-        tutorToBeUpdated.$set({
-            name,
-            password,
-            email,
-            phone,
-            zip_code,
-            date_of_birth,
-        });
+        tutorToBeUpdated.$set(tutor);
 
         return await tutorToBeUpdated.save();
     }
@@ -34,7 +28,7 @@ class TutorRepository {
     }
 
     async deletePet(tutor: HydratedDocument<ITutor>, petIndex: number) {
-        tutor.pets.splice(petIndex, 1);
+        tutor.pets!.splice(petIndex, 1);
         return await tutor.save();
     }
 }
