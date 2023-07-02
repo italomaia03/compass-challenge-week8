@@ -2,67 +2,69 @@ import { StatusCodes } from "http-status-codes";
 import { CustomError } from "../errors/CustomError";
 import { ITutor, Tutor } from "../models";
 import TutorRepository from "../repository/tutorRepository";
-import { validateTutorSchema } from "../utils/tutorValidator";
-import { HydratedDocument } from "mongoose";
+import petService from "./petService";
 
 class TutorService {
-    async get() {
-        return await TutorRepository.get();
+  async get() {
+    return await TutorRepository.get();
+  }
+
+  async getOne(args: object) {
+    return await TutorRepository.getOne(args);
+  }
+
+  async create(data: ITutor) {
+    await TutorRepository.create(data);
+
+    return { msg: "Tutor has been successfully created" };
+  }
+
+  async update(tutorId: string, loggedTutorId: string, data: ITutor) {
+    const tutorToBeUpdated = await this.getOne({ _id: tutorId });
+
+    if (!tutorToBeUpdated) {
+      throw new CustomError(
+        `There is no tutor with ID ${tutorId}`,
+        StatusCodes.NOT_FOUND
+      );
     }
 
-    async getOne(args: object) {
-        return await TutorRepository.getOne(args);
+    if (tutorToBeUpdated.id !== loggedTutorId) {
+      throw new CustomError("Operation not authorized", StatusCodes.FORBIDDEN);
     }
 
-    async create(data: ITutor) {
-        await validateTutorSchema(data);
+    await TutorRepository.update(tutorToBeUpdated, data);
 
-        await TutorRepository.create(data);
+    return { msg: "Tutor has been successfully updated" };
+  }
 
-        return { msg: "Tutor has been successfully created" };
+  async delete(tutorId: string, loggedTutorId: string) {
+    const tutor = await Tutor.findOne({ _id: tutorId });
+
+    if (!tutor) {
+      throw new CustomError(
+        `There is no tutor with ID ${tutorId}`,
+        StatusCodes.NOT_FOUND
+      );
     }
 
-    async update(tutorId: string, data: ITutor) {
-        const tutorToBeUpdated = await this.getOne({ _id: tutorId });
-
-        if (!tutorToBeUpdated) {
-            throw new CustomError(
-                `There is no tutor with ID ${tutorId}`,
-                StatusCodes.NOT_FOUND
-            );
-        }
-        await validateTutorSchema(data);
-
-        await TutorRepository.update(tutorToBeUpdated, data);
-
-        return { msg: "Tutor has been successfully updated" };
+    if (tutor.id !== loggedTutorId) {
+      throw new CustomError("Operation not authorized", StatusCodes.FORBIDDEN);
     }
 
-    async delete(tutorId: string) {
-        const tutor = await Tutor.findOne({ _id: tutorId });
+    const pets = await petService.get({ tutorId });
 
-        if (!tutor) {
-            throw new CustomError(
-                `There is no tutor with ID ${tutorId}`,
-                StatusCodes.NOT_FOUND
-            );
-        }
-
-        if (tutor.pets!.length > 0) {
-            throw new CustomError(
-                "Tutors with assigned pets cannot be deleted",
-                StatusCodes.BAD_REQUEST
-            );
-        }
-
-        await TutorRepository.delete(tutorId);
-
-        return { msg: "Tutor has been successfully delete" };
+    if (pets.length > 0) {
+      throw new CustomError(
+        "Tutors with assigned pets cannot be deleted",
+        StatusCodes.BAD_REQUEST
+      );
     }
 
-    async deletePet(tutor: HydratedDocument<ITutor>, petIndex: number) {
-        return TutorRepository.deletePet(tutor, petIndex);
-    }
+    await TutorRepository.delete(tutorId);
+
+    return { msg: "No content." };
+  }
 }
 
 const tutorService = new TutorService();
