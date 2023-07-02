@@ -7,6 +7,6 @@ const controller = new PetController();
 
 petRouter.route("/pet/:tutorId").post(authenticateTutor, controller.create);
 petRouter
-    .route("/pet/:petId/tutor/:tutorId")
-    .put(authenticateTutor, controller.update)
-    .delete(authenticateTutor, controller.delete);
+  .route("/pet/:petId/tutor/:tutorId")
+  .put(authenticateTutor, controller.update)
+  .delete(authenticateTutor, controller.delete);

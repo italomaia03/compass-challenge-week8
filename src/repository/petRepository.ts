@@ -2,23 +2,35 @@ import { HydratedDocument } from "mongoose";
 import { IPet, Pet } from "../models";
 
 class PetRepository {
-    async getOne(petId: string) {
-        return Pet.findOne({ _id: petId });
-    }
+  async getOne(petId: string) {
+    return Pet.findOne({ _id: petId });
+  }
 
-    async create(data: IPet) {
-        const petToBeSaved = await new Pet(data).save();
+  async get(args: object) {
+    return await Pet.find(args);
+  }
 
-        return petToBeSaved;
-    }
+  async create(data: IPet) {
+    const petToBeSaved = new Pet(data);
+    await petToBeSaved.validate();
+    await petToBeSaved.save();
 
-    async update(pet: HydratedDocument<IPet>) {
-        return pet.save();
-    }
+    return petToBeSaved;
+  }
 
-    async delete(pet: HydratedDocument<IPet>) {
-        return pet.deleteOne();
-    }
+  async update(petToBeUpdated: HydratedDocument<IPet>, pet: IPet) {
+    const updatedPet: IPet = pet;
+
+    petToBeUpdated.$set(updatedPet);
+
+    await petToBeUpdated.validate();
+
+    return petToBeUpdated.save();
+  }
+
+  async delete(petId: string) {
+    return Pet.findOneAndDelete({ _id: petId });
+  }
 }
 
 export default new PetRepository();
