@@ -2,44 +2,45 @@
 
 This code challenge consists of an activity performed in the internship program SP - Back-end Journey (Node.js) - AWS Cloud Context - Compass UOL.
 
-This is a REST API performs CRUD operations with tutors and pets using MongoDB for data persistence.
+This is a REST API that performs CRUD operations with tutors and pets using MongoDB for data persistence.
 
 ## Table of Contents
 
--   [Technologies](#technologies)
-<!-- -   [Installation](#technologies) (tba)
--   [Running](#running-locally)
--   [API Documentation](#api-documentation) -->
+- [Technologies](#technologies)
+- [Installation](#technologies)
+- [Running](#running-locally)
+- [API Documentation](#api-documentation)
 
 ## Technologies
 
 Project created using:
 
--   Express
--   Typescript
--   NodeJS
--   MongoDB
--   Mongoose
--   Jsonwebtoken
+- Express: ^4.18.2
+- Typescript: 5.0.4
+- NodeJS: v18.13.0
+- MongoDB: ^5.6.0
+- Mongoose: ^7.3.1
+- Bcrypt: ^5.1.0
+- Jsonwebtoken: ^9.0.0
 
-<!-- ## Installation
+## Installation
 
-You can either download the released version, or clone this repository.
+You can fork this repository or download the released zip file.
 
 Running the project requires the installation of NodeJS and NPM. You can get those in the following link:
 
--   [Node Instalation](https://nodejs.org/en)
+- [Node Installation](https://nodejs.org/en)
 
-Give preference to the LTS versions available to your Operating System (Windows, Linux, MacOS, etc.).
+### Forking the repository
 
-### Getting the release
+Fork the repository to your github and then clone it to your machine.
 
-Download the released project, unzip it in folder of your choice, open the terminal (or powershell for Windows users), and then put the following commands:
+Then, run the following commands:
 
 **Bash**
 
 ```bash
-  cd ~/[path-to-project]/compass-challenge-week-4
+  cd ~/[folder-of-choice]/compass-challenge-week8
 
   npm install
 ```
@@ -47,48 +48,58 @@ Download the released project, unzip it in folder of your choice, open the termi
 **CMD/Powershell**
 
 ```powershell
-  cd C:\[path-to-project]\compass-challenge-week-8
+  cd C:\[folder-of-choice]\compass-challenge-week8
 
   npm install
 ```
 
-By doing this, the dependencies of the project will be installed.
+Now, all the dependencies are in place and the app can be built correctly.
 
 ## Running locally
 
-After installing all the dependencies, the application should be built. This process is performed by running:
+Before running the application, you should create a .env file with the following variables:
+
+```
+compass-challenge-week8/
+    .env
+```
+
+```
+JWT_SECRET=string of your choice
+JWT_LIFETIME=1d
+MONGO_URI=string for connecting with your Mongo database
+SALT_ROUNDS=number of hashing rounds performed to encrypt the password before storing in
+the database
+```
+
+After performing the installation, run the following command to build the application:
 
 ```bash
   npm run build
 ```
 
-Now, we can run the application with the command below:
+Now, the application can be run! By default, it will run on PORT 3000. If you have another service running on this PORT, you can assign a free port to run the application. The commands are as follows:
 
-```bash
-  npm run start
-```
-
-By default, the application will run on PORT 3000. If you have another service running on this PORT, you can assign a free port to run the application. The commands are as follow:
+Example:
 
 **Bash**
 
 ```bash
-  PORT=5000 (for example)
-  npm run start
+  PORT=5000 npm start
 ```
 
 **CMD**
 
 ```bash
   set PORT=5000 (for example)
-  npm run start
+  npm start
 ```
 
 **Powershell**
 
 ```bash
   $env:PORT=5000 (for example)
-  npm run start
+  npm start
 ```
 
 If all goes well, open your browser and access the link:
@@ -97,9 +108,15 @@ If all goes well, open your browser and access the link:
   http://localhost:[PORT]/api/v1/api-docs
 ```
 
-In this page, it is possible to test the API functionalities.
+In this page, it is possible to test the API endpoints.
 
 ## API Documentation
+
+#### Authentication
+
+```http
+  POST /api/v1/auth
+```
 
 #### Returns all tutors
 
@@ -121,7 +138,7 @@ In this page, it is possible to test the API functionalities.
 
 | Parameter | Type     | Description                                      |
 | :-------- | :------- | :----------------------------------------------- |
-| `id`      | `number` | **Required**. ID of the tutor you want to update |
+| `id`      | `string` | **Required**. ID of the tutor you want to update |
 
 #### Delete tutor from database
 
@@ -131,7 +148,7 @@ In this page, it is possible to test the API functionalities.
 
 | Parameter | Type     | Description                                      |
 | :-------- | :------- | :----------------------------------------------- |
-| `id`      | `number` | **Required**. ID of the tutor you want to delete |
+| `id`      | `string` | **Required**. ID of the tutor you want to delete |
 
 #### Assigns a pet to a tutor
 
@@ -141,7 +158,7 @@ In this page, it is possible to test the API functionalities.
 
 | Parameter | Type     | Description                                              |
 | :-------- | :------- | :------------------------------------------------------- |
-| `tutorId` | `number` | **Required**. ID of the tutor you want to assign the pet |
+| `tutorId` | `strung` | **Required**. ID of the tutor you want to assign the pet |
 
 #### Update pet's attributes
 
@@ -151,8 +168,8 @@ In this page, it is possible to test the API functionalities.
 
 | Parameter | Type     | Description                                           |
 | :-------- | :------- | :---------------------------------------------------- |
-| `petId`   | `number` | **Required**. ID of the pet you want to update        |
-| `tutorId` | `number` | **Required**. ID of the tutor responsible for the pet |
+| `petId`   | `string` | **Required**. ID of the pet you want to update        |
+| `tutorId` | `string` | **Required**. ID of the tutor responsible for the pet |
 
 #### Delete pet from database
 
@@ -162,5 +179,5 @@ In this page, it is possible to test the API functionalities.
 
 | Parameter | Type     | Description                                           |
 | :-------- | :------- | :---------------------------------------------------- |
-| `petId`   | `number` | **Required**. ID of the pet you want to delete        |
-| `tutorId` | `number` | **Required**. ID of the tutor responsible for the pet | -->
+| `petId`   | `string` | **Required**. ID of the pet you want to delete        |
+| `tutorId` | `string` | **Required**. ID of the tutor responsible for the pet |
